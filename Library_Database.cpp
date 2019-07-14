@@ -38,7 +38,7 @@ int main(){
     string Menu="\nPlease select a choice from the options below.\na. Add a book to the database\nb. Search the database for a book\nc. Modify an existing book entry\nd. Delete an entry from the databse\ne. Print contents of the database\nf. Save changes and exit the database\n";
     read(database, bookcount);
     while(c!='f')
-    {cout<<"\nWelcome to the EECS 138 Library Database!\n";
+    {cout<<"\nWelcome to the Joe Pickert Library Database!\n";
     cout<<Menu;
     cin>>c;
     switch(c)
@@ -351,14 +351,23 @@ void modify(book database [], int bookcount){
 
 
 void printbook(book database [], int counter){
-    for(int i=0; i<counter; i++)
-       {cout<<"\nBook title: "<<database[i].name<<"\n";
-        cout<<"Book genre: "<<database[i].genre<<"\n";
-        cout<<"Year published: "<<database[i].year<<"\n";
-        cout<<"Book author: "<<database[i].author<<"\n";
-        cout<<"Available?: ";
-        if(database[i].available==true){cout<<"Y\n";}
-        else{cout<<"N\n";}}
+    if(counter==0){
+        cout<<"Library database is currently empty. Please add some records!\n\n";
+        return;
+        }
+    else{
+        for(int i=0; i<counter; i++)
+           {cout<<"\nBook title: "<<database[i].name<<"\n";
+            cout<<"Book genre: "<<database[i].genre<<"\n";
+            cout<<"Year published: "<<database[i].year<<"\n";
+            cout<<"Book author: "<<database[i].author<<"\n";
+            cout<<"Available?: ";
+            if(database[i].available==true){cout<<"Y\n";}
+            else{
+                cout<<"N\n";
+                }
+            }
+    }
 }
 
 void destroy(book database [], int& bookcount){

@@ -2,10 +2,9 @@
 // Name:        Joe Pickert
 // KUID:        2798865
 // Section:     MWF 10:00-10:50
-// Instructor:  coston
+// Instructor:  Scott Ccoston
 // Assignment:  Lab 09
 //********************************************************
-//
 
 
 #include <iostream>
@@ -36,7 +35,7 @@ int main(){
     srand(1);
     fill_rnd(a, items);
     printarr(a, items);
-    cout<<"Nth:"<<findNth(a, items, Nth)<<"\n";
+    cout<<"Sorting for the "<<Nth<<"th largest integer\n"<< "Nth:"<<findNth(a, items, Nth)<<"\n";
     return 0;
 }
 
@@ -50,17 +49,32 @@ int main(){
 //
 int findNth(int a[], int items, int nth){
     int pivot;
-}
+    int smaller[items];
+    int larger[items];
+    int smallersize;
+    int largersize;
+    while(1){
+    pivot=a[0];
+    smallersize=0;
+    largersize=0;
+    for(int i=1; i<items; i++)
+       if(pivot<a[i]){larger[largersize]=a[i];largersize++;}
+       else{smaller[smallersize]=a[i];smallersize++;}
+    if(largersize==(nth-1)){return pivot;}
+    else if(smallersize>(nth-1)){here2there(smaller,a,smallersize);items=smallersize;nth=nth-(largersize+1);}
+    else{here2there(larger,a,largersize);items=largersize;}
+}}
 
-// take values from here and copy them to there
+
 bool here2there(int here[],int there[], int lmt){
+    for(int i=0; i<lmt; i++){there[i]=here[i];}
     return true;
 }
 
 // you'll return random numbers between 100 and 999
 // using rand() as part of a small function using % and +
 bool fill_rnd(int a[], int lmt){
-    for(int i=0; i<10; i++){a[i]= 100+ rand() % 899;}
+    for(int i=0; i<lmt; i++){a[i]= 100+ rand()%899;}
     return true;
 }
 
