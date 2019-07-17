@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <string>
 #include <cmath>
@@ -258,7 +259,7 @@ bool InBox(int grid[9][9], int StartRow, int StartCol, int guess){
 //Function calls all three previous tests to determine if guess fulfills puzzle rules
 bool NumberWorks(int grid[9][9], int row, int col, int guess){
     return !InRow(grid, row, guess) &&
-            !InCol(grid, row, guess) &&
+            !InCol(grid, col, guess) &&
             !InBox(grid, row - row % 3, col- col % 3, guess) &&
             grid[row][col] == 0;
 }
@@ -275,7 +276,43 @@ void SudokuPrint(int grid[9][9]){
 
 void sudoku_main(){
     //Driver function for sudoku solver app
-    int grid[9][9] = {{3, 0, 6, 5, 0, 8, 4, 0, 0},
+
+    std::cout<<std::endl<<"~~~Welcome to the Sudoku Puzzle Solver!~~~"<<std::endl;
+    std::cout<<"To solve your puzzle, enter the existing cell values one at a time."<<std::endl;
+    std::cout<<"Move from left to right across rows and start in the upper left hand corner."<<std::endl;
+    std::cout<<"For empty cells, enter 0."<<std::endl;
+
+    int grid[9][9];
+    //Loop that allows user to input their unsolved puzzle and review input before solving
+    while(true){
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                std::cin>>grid[i][j];
+            }
+        }
+        //Printing user input for review
+        std::cout<<std::endl<<"Your input was: "<<std::endl;
+        SudokuPrint(grid);
+        char correct = '\0';
+        std::cout<<std::endl<<"Was your input correct?(Y/N): ";
+        std::cin>>correct;
+
+        //Makes choice variable case agnostic
+        correct = toupper(correct);
+        if(correct == 'Y'){
+            break;
+        }
+        if(correct == 'N'){
+            continue;
+        }
+        else{
+            std::cout<<"Invalid input. Returning to main...";
+            return;
+        }
+    }
+
+    /*A sample puzzle if necessary
+    int example[9][9] = {{3, 0, 6, 5, 0, 8, 4, 0, 0},
                       {5, 2, 0, 0, 0, 0, 0, 0, 0},
                       {0, 8, 7, 0, 0, 0, 0, 3, 1},
                       {0, 0, 3, 0, 1, 0, 0, 8, 0},
@@ -284,8 +321,10 @@ void sudoku_main(){
                       {1, 3, 0, 0, 0, 0, 2, 5, 0},
                       {0, 0, 0, 0, 0, 0, 0, 7, 4},
                       {0, 0, 5, 2, 0, 6, 3, 0, 0}};
+    */
 
     if (SudokuSolver(grid) == true){
+        std::cout<<"Your solved puzzle is: "<<std::endl;
         SudokuPrint(grid);
     }
     else{
