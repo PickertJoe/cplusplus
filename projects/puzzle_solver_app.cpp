@@ -72,6 +72,35 @@ void fibonacci(int iterations){
     std::cout<<"]";
 }
 
+//######################################
+//BEGIN SECTION OF REVERSE STRING CODE
+//#####################################
+
+//A function that derives the reverse of a user-provided string by printing it backwards
+void ReverseString(std::string str){
+
+    for(int i=str.length()-1; i>=0; i--){
+        std::cout<<str[i];
+    }
+}
+
+//Presents welcome message and grabs user input for string
+void ReverseMain(){
+
+    std::string str;
+
+    std::cout<<"~~~Welcome to the String Reversal Machine!~~~"<<std::endl<<std::endl;
+    std::cout<<"For any phrase you provide, I can return it to you in reverse order!"<<std::endl;
+    std::cout<<"Please type the phrase you'd like to reverse: ";
+    std::cin.ignore();
+    std::getline(std::cin,str);
+
+    std::cout<<std::endl<<"Your original phrase was: "<<str<<std::endl;
+    std::cout<<"Your reversed phrase is: ";ReverseString(str);
+
+}
+
+
 //###################################
 //BEGIN SECTION OF DISTANCE CALCULATOR CODE
 //###################################
@@ -381,7 +410,7 @@ int main(){
             binary_calculator();
             break;
         case 7:
-            reverse_string();
+            ReverseMain();
             break;
         case 8:
             distance_main();
