@@ -6,27 +6,13 @@
 #include <cmath>
 #include <iomanip>
 
-void fibonacci_input();
-void fibonacci(int n);
-void prime_factorization();
-void next_prime();
-void palindrome();
-void change_calculator();
-void binary_calculator();
-void reverse_string();
-void distance_main();
-void distance_input( double&, double&, double&, double&,std::string&, std::string&);
-double toRadians(double&, double&, double&, double&);
-double distance_calc(double, double, double, double);
-void sudoku();
-void infix();
 
 //###################################
 //BEGIN SECTION OF FIBONACCI SEQUENCE CODE
 //###################################
 
+//Collects user input for iterations of Fibonacci sequence
 void fibonacci_input(){
-    //Collects user input for number of desired iterations
     //Controls for invalid input
     bool valid = true;
     int iterations;
@@ -47,8 +33,8 @@ void fibonacci_input(){
     fibonacci(iterations);
 }
 
+//Takes the user-provided number of iterations and produces a fibonacci sequence dynamically
 void fibonacci(int iterations){
-    //Takes the user-provided number of iterations and produces a fibonacci sequence dynamically
     int fib[iterations + 1];
     int counter;
 
@@ -71,6 +57,11 @@ void fibonacci(int iterations){
     }
     std::cout<<"]";
 }
+
+
+
+
+
 
 //######################################
 //BEGIN SECTION OF REVERSE STRING CODE
@@ -105,7 +96,8 @@ void ReverseMain(){
 //BEGIN SECTION OF DISTANCE CALCULATOR CODE
 //###################################
 
-void distance_main(){
+//Main driver function for the coordinate distance calculator
+void DistanceMain(){
     //Initializes appropriate variables and orchestrates distance calculation functions
     std::string city1, city2;
     double lat1,long1,lat2,long2, distance;
@@ -151,6 +143,7 @@ void distance_main(){
     }
 }
 
+//Collects user input for names and coordinates of locations
 void distance_input(double &lat1, double &long1, double &lat2, double &long2,std::string &city1, std::string &city2){
     std::cout<<"Please enter the name of your first location (City, Country): ";
     std::cin.ignore();
@@ -168,8 +161,9 @@ void distance_input(double &lat1, double &long1, double &lat2, double &long2,std
     std::cin>>long2;
 }
 
+//Converts provided coordinates from degrees to radians
 double toRadians(double &lat1, double &long1, double &lat2, double &long2){
-    //Converts the coordinates from degree to radians
+
     double degree = (M_PI) / 180;
     lat1 = (lat1 * degree);
     lat2 = (lat2 * degree);
@@ -177,10 +171,10 @@ double toRadians(double &lat1, double &long1, double &lat2, double &long2){
     long2 = (long2 * degree);
 }
 
+//Solves for the distance between two points on Earth's surface using the Haversine formula
+//This equation solves in terms of kilometers by default
+//Units are converted to Imperial if desired by user's request
 double distance_calc(double lat1, double long1, double lat2, double long2){
-    //Solves for the distance between two points on Earth's surface using the Haversine formula
-    //This equation solves in terms of kilometers by default
-    //Units are converted to Imperial if desired by user's request
 
     double diff_long = long2 - long1;
     double diff_lat = lat2 - lat1;
@@ -303,7 +297,8 @@ void SudokuPrint(int grid[9][9]){
     }
 }
 
-void sudoku_main(){
+//Main driver function for the Sudoku solver
+void SudokuMain(){
     //Driver function for sudoku solver app
 
     std::cout<<std::endl<<"~~~Welcome to the Sudoku Puzzle Solver!~~~"<<std::endl;
@@ -362,14 +357,137 @@ void sudoku_main(){
 
 }
 
-void prime_factorization(){};
-void next_prime(){};
-void palindrome(){};
-void change_calculator(){};
-void binary_calculator(){};
-void reverse_string(){};
-void sudoku(){};
-void infix(){};
+//#####################################
+//BEGIN SECTION OF INFIX CONVERSION CODE
+//#####################################
+
+
+
+
+//Fuction to test whether the read-in character is an operator or operand
+bool Operator(char c){
+    return(!std::isalpha(c) && !std::isdigit(c));
+}
+
+//Function to establish order of operations based on operator type
+int SetPriority(char c){
+    if (c=='-' || c=='+'){
+        return 1;
+    }
+    else if (c=='*' || c=='/'){
+        return 2;
+    }
+    else if (c=='^'){
+        return 3;
+    }
+    else{
+        return 0;
+    }
+}
+
+
+//Function that converts an infix to postfix using stack data structure
+std::str PostfixConvert(std::str infix){
+
+    //Surrounding expression with parantheses
+    infix = '(' + infix + ')';
+    int length = infix.size();
+    std::stack<char> infix_stack;
+    std::string result;
+
+    //Loop to scan each character of the expression and manipulate the stack
+    for (int i=0; i<length; i++){
+        //Adding operands to output
+        if (std::isaplha(infix[i]) || std::isdigit(infix[i])){
+            result += infix[i];
+        }
+
+        //If '(' is encountered, push to stack
+        else if (infix[i] == '('){
+            infix_stack.push('(');
+        }
+
+        //If a ')' is enountered, pop the stack until '(' is found
+        else if (infix[i] == ')'){
+
+            while (infix_stack.top() != '('){
+                    output += infix_stack.top();
+                    infix_stack.pop();
+            }
+        }
+
+        //If operator is encountered, estabish primacy
+        else{
+            if (Operator(infix_stack.top())){
+                while (SetPriority(infix[i]) <= SetPriority(infix_stack.top())){
+                    output += infix_stack.top();
+                    infix_stack.pop();
+                }
+                infix_stack.push(infix[i]);
+            }
+        }
+    }
+    return result;
+}
+
+//Function that converts an infix expression to prefix by reversing its postfix equivalent
+std::str PrefixConvert(std::str infix){
+    int length = infix.size();
+
+    std::reverse(infix.begin(), infix.end());
+
+    //Reverse the placements of opposite-facing parantheses
+    for( int i=0; i<length; i++){
+        if (infix[i] == '('){
+            infix[i] = ')';
+            i++;
+            }
+        else of (infix[i] == ')'){
+            infix[i] = '(';
+            i++;
+        }
+    }
+
+    //Sending string to postfix converter to prepare for reversal
+    std::string result = PostfixConvert(infix);
+
+    //Reverse the converted string
+    std::reverse(result.begin(), result.end());
+
+    return result;
+}
+
+
+//Main driver function for Infix converter
+void InfixMain(){
+
+    std::string infix;
+    int choice;
+
+    std::cout<<std::endl<<"~~~Welcome to the Infix Expression Evaluator!~~~"<<std::endl<<std::endl;
+    std::cout<<"I can convert any valid infix expression to its prefix or postfix equivalent."<<std::endl;
+    std::cout<<"Letters or numbers may be used."<<std::endl;
+    std::cout<<"Please enter your infix expression with no spaces: ";
+
+    std::cin.ignore();
+    std::getline(std::cin, infix);
+
+    std::cout<<"Would you like to convert your expression to prefix or postfix notation?"<<std::endl;
+    std::cout<<"1) Prefix /n 2) Postfix :";
+    std::cin>>choice;
+
+    if(choice == 1){
+        std::cout<<"Your original expression was: "<<infix<<std::endl;
+        std::cout<<"It's prefix equivalent is: "<<PrefixConvert(infix);<<std::endl;
+    }
+    if(choice == 2){
+        std::cout<<"Your original expression was: "<<infix<<std::endl;
+        std::cout<<"It's postfix equivalent is: "<<PostfixConvert(infix);<<std::endl;
+    }
+    else{
+        std::cout<<"Invalid input. Returning to main...";
+    }
+}
 
 int main(){
     //Main menu that allows user to choose puzzle/problem they'd like to solve
@@ -413,13 +531,13 @@ int main(){
             ReverseMain();
             break;
         case 8:
-            distance_main();
+            DistanceMain();
             break;
         case 9:
-            sudoku_main();
+            SudokuMain();
             break;
         case 10:
-            infix();
+            InfixMain();
             break;
         case 11:
             std::cout<<"Closing program..."<<std::endl;
