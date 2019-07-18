@@ -66,9 +66,9 @@ void Fibonacci(){
     std::cout<<"]";
 }
 
-//######################################
+//#########################################
 //BEGIN SECTION OF PRIME FACTORIZATION CODE
-//######################################
+//#########################################
 
 //Function to grab and control for user input
 void PrimeInput(int &number){
@@ -117,11 +117,89 @@ void PrimeFact(){
     if(number>2){
         std::cout<<number<<" ";
     }
+    return;
+}
 
+//#########################################
+//BEGIN SECTION OF NEXT PRIME NUMBER  CODE
+//#########################################
 
+//Tests whether a number is prime
+bool IsPrime(int i){
+    for(int j=2; j<i; j++){
+        if ( i % j == 0){
+            return false;
+        }
+    }
+    return true;
 }
 
 
+//Tests whether prime number is already in array
+bool InArray(int primes[10000], int counter, int number){
+    for(int k=0; k<=counter; k++){
+        if (number == primes[k]){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+//Function that generates the next prime number in sequence until the user wishes to stop
+void NextPrimeNumber(){
+    std::cout<<std::endl<<std::endl<<"~~~Welcome to the Next Prime Number Generator!~~~"<<std::endl<<std::endl;
+    std::cout<<"I can generate new prime numbers for as long as you'd like."<<std::endl;
+
+    int maxsize = 10000;
+    int maxiterations = 1000 * maxsize;
+    int primes[10000];
+    bool valid = true;
+    int counter = 2;
+
+    //Loop to continually generate new prime numbers until user wishes to stop
+    while(valid){
+        if (!primes[0]){
+            std::cout<<1;
+            primes[0] = 1;
+        }
+
+        else if (!primes[1]){
+            std::cout<<2;
+            primes[1]=2;
+        }
+        else{
+            for (int i=3; i<maxiterations; i+=2){
+                if (!IsPrime(i)){
+                    continue;
+                }
+
+                if (InArray(primes, counter, i)){
+                    std::cout<<i;
+                    primes[counter] = i;
+                    counter ++;
+                    break;
+                }
+            }
+        }
+        char c = '\0';
+        std::cout<<std::endl<<std::endl<<"Would you like to continue?(Y/N): ";
+        std::cin>>c;
+        c= std::toupper(c);
+        if (c=='Y'){
+            continue;
+        }
+        else if (c=='N'){
+            break;
+        }
+        else{
+            std::cout<<"Invalid input, generating next number...";
+        }
+
+    }
+
+
+}
 
 
 //######################################
@@ -422,9 +500,6 @@ void SudokuMain(){
 //BEGIN SECTION OF INFIX CONVERSION CODE
 //#####################################
 
-
-
-
 //Fuction to test whether the read-in character is an operator or operand
 bool Operator(char c){
     return(!std::isalpha(c) && !std::isdigit(c));
@@ -579,7 +654,7 @@ int main(){
             PrimeFact();
             break;
         case 3:
-           // next_prime();
+            NextPrimeNumber();
             break;
         case 4:
           //  palindrome();
