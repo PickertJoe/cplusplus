@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include <iomanip>
+#include <stack>
 
 
 //###################################
@@ -12,31 +13,38 @@
 //###################################
 
 //Collects user input for iterations of Fibonacci sequence
-void fibonacci_input(){
+void FibInput(int &iterations){
     //Controls for invalid input
     bool valid = true;
-    int iterations;
-    std::cout<<"~~~Welcome to the Fibonacci Sequence Generator!~~~"<<std::endl<<std::endl;
     while(valid){
         std::cout<<"Please enter the number of iterations of the sequence you'd like to generate (<100): ";
         std::cin>>iterations;
         if( iterations > 0 && iterations <101){
             valid = false;
+            return;
         }
-        if ( iterations > 100 ){
+        else if ( iterations > 100 ){
             std::cout<<"Program cannot handle that many iterations. Please enter a number between 1 and 100."<<std::endl;
         }
         else{
             std::cout<<"Invalid input. Please enter a number between 1 and 100."<<std::endl;
         }
     }
-    fibonacci(iterations);
 }
 
+
 //Takes the user-provided number of iterations and produces a fibonacci sequence dynamically
-void fibonacci(int iterations){
+//Fibonacci driver function
+void Fibonacci(){
+    //Welcome message and attaining number of iterations
+    int iterations;
+
+    std::cout<<"~~~Welcome to the Fibonacci Sequence Generator!~~~"<<std::endl<<std::endl;
+
+    FibInput(iterations);
+
+    //Initializing array to hold sequence
     int fib[iterations + 1];
-    int counter;
 
     //Storing first and second numbers in the sequence by default
     fib[0] = 0;
@@ -58,14 +66,67 @@ void fibonacci(int iterations){
     std::cout<<"]";
 }
 
+//######################################
+//BEGIN SECTION OF PRIME FACTORIZATION CODE
+//######################################
 
+//Function to grab and control for user input
+void PrimeInput(int &number){
+    bool valid = true;
+    while(valid){
+        std::cout<<"Please enter a positive integer of your choosing: ";
+        std::cin>>number;
+        if( number < 0){
+            std::cout<<"Input error. Number entered was less than 0. Please try again."<<std::endl;
+        }
+        else if ( std::cin.fail() ){
+            std::cout<<"Input error. Value entered was not a number. Please try again."<<std::endl;
+        }
+        else{
+            valid = false;
+            return;
+        }
+    }
+}
+
+//Driver function for prime factorization
+void PrimeFact(){
+    std::cout<<std::endl<<"~~~Welcome to the C++ Prime Number Factorization Calculator!~~~"<<std::endl<<std::endl;
+    std::cout<<"For any number you input, I can return of its prime factors."<<std::endl;
+    int number;
+
+    //Calls to user input function
+    PrimeInput(number);
+
+    std::cout<<"The prime factors of "<<number<<" are: "<<std::endl;
+
+    //Reduce a composite number by dividing by 2 until it becomes odd
+    while (number % 2 == 0){
+        std::cout<<2<< " ";
+        number = number/2;
+    }
+
+    //Once the number becomes odd, begin testing for prime factors
+    for (int i =3; i<= sqrt(number); i=i+2){
+        while (number % i==0){
+            std::cout<<i<<" ";
+            number = number/i;
+        }
+    }
+
+    if(number>2){
+        std::cout<<number<<" ";
+    }
+
+
+}
 
 
 
 
 //######################################
 //BEGIN SECTION OF REVERSE STRING CODE
-//#####################################
+//######################################
 
 //A function that derives the reverse of a user-provided string by printing it backwards
 void ReverseString(std::string str){
@@ -95,6 +156,52 @@ void ReverseMain(){
 //###################################
 //BEGIN SECTION OF DISTANCE CALCULATOR CODE
 //###################################
+
+//Collects user input for names and coordinates of locations
+void distance_input(double &lat1, double &long1, double &lat2, double &long2,std::string &city1, std::string &city2){
+    std::cout<<"Please enter the name of your first location (City, Country): ";
+    std::cin.ignore();
+    std::getline(std::cin,city1);
+    std::cout<<"Please enter the latitude of "<<city1<<" (up to 15 decimal places): ";
+    std::cin>>lat1;
+    std::cout<<"Please enter the longitude of "<<city1<<" (up to 15 decimal places): ";
+    std::cin>>long1;
+    std::cout<<"Please enter the name of your second location (City, Country): ";
+    std::cin.ignore();
+    std::getline(std::cin,city2);
+    std::cout<<"Please enter the latitude of "<<city2<<" (up to 15 decimal places): ";
+    std::cin>>lat2;
+    std::cout<<"Please enter the longitude of "<<city2<<" (up to 15 decimal places): ";
+    std::cin>>long2;
+}
+
+//Converts provided coordinates from degrees to radians
+void toRadians(double &lat1, double &long1, double &lat2, double &long2){
+
+    double degree = (M_PI) / 180;
+    lat1 = (lat1 * degree);
+    lat2 = (lat2 * degree);
+    long1 = (long1 * degree);
+    long2 = (long2 * degree);
+}
+
+//Solves for the distance between two points on Earth's surface using the Haversine formula
+//This equation solves in terms of kilometers by default
+//Units are converted to Imperial if desired by user's request
+double distance_calc(double lat1, double long1, double lat2, double long2){
+
+    double diff_long = long2 - long1;
+    double diff_lat = lat2 - lat1;
+
+    double distance = pow(sin(diff_lat / 2), 2) + cos(lat1) * cos(lat2) * pow(sin(diff_long / 2 ), 2);
+    distance = 2 * asin(sqrt(distance));
+
+    //Using kilometers for radius of the Earth R = 6371
+    double R = 6371;
+    distance = R * distance;
+
+    return distance;
+}
 
 //Main driver function for the coordinate distance calculator
 void DistanceMain(){
@@ -141,52 +248,6 @@ void DistanceMain(){
             std::cout<<"Invalid input. Please select one of the unit options.";
         }
     }
-}
-
-//Collects user input for names and coordinates of locations
-void distance_input(double &lat1, double &long1, double &lat2, double &long2,std::string &city1, std::string &city2){
-    std::cout<<"Please enter the name of your first location (City, Country): ";
-    std::cin.ignore();
-    std::getline(std::cin,city1);
-    std::cout<<"Please enter the latitude of "<<city1<<" (up to 15 decimal places): ";
-    std::cin>>lat1;
-    std::cout<<"Please enter the longitude of "<<city1<<" (up to 15 decimal places): ";
-    std::cin>>long1;
-    std::cout<<"Please enter the name of your second location (City, Country): ";
-    std::cin.ignore();
-    std::getline(std::cin,city2);
-    std::cout<<"Please enter the latitude of "<<city2<<" (up to 15 decimal places): ";
-    std::cin>>lat2;
-    std::cout<<"Please enter the longitude of "<<city2<<" (up to 15 decimal places): ";
-    std::cin>>long2;
-}
-
-//Converts provided coordinates from degrees to radians
-double toRadians(double &lat1, double &long1, double &lat2, double &long2){
-
-    double degree = (M_PI) / 180;
-    lat1 = (lat1 * degree);
-    lat2 = (lat2 * degree);
-    long1 = (long1 * degree);
-    long2 = (long2 * degree);
-}
-
-//Solves for the distance between two points on Earth's surface using the Haversine formula
-//This equation solves in terms of kilometers by default
-//Units are converted to Imperial if desired by user's request
-double distance_calc(double lat1, double long1, double lat2, double long2){
-
-    double diff_long = long2 - long1;
-    double diff_lat = lat2 - lat1;
-
-    double distance = pow(sin(diff_lat / 2), 2) + cos(lat1) * cos(lat2) * pow(sin(diff_long / 2 ), 2);
-    distance = 2 * asin(sqrt(distance));
-
-    //Using kilometers for radius of the Earth R = 6371
-    double R = 6371;
-    distance = R * distance;
-
-    return distance;
 }
 
 //###################################
@@ -380,14 +441,12 @@ int SetPriority(char c){
     else if (c=='^'){
         return 3;
     }
-    else{
-        return 0;
-    }
+    return 0;
 }
 
 
 //Function that converts an infix to postfix using stack data structure
-std::str PostfixConvert(std::str infix){
+std::string PostfixConvert(std::string infix){
 
     //Surrounding expression with parantheses
     infix = '(' + infix + ')';
@@ -398,7 +457,7 @@ std::str PostfixConvert(std::str infix){
     //Loop to scan each character of the expression and manipulate the stack
     for (int i=0; i<length; i++){
         //Adding operands to output
-        if (std::isaplha(infix[i]) || std::isdigit(infix[i])){
+        if (std::isalpha(infix[i]) || std::isdigit(infix[i])){
             result += infix[i];
         }
 
@@ -411,16 +470,18 @@ std::str PostfixConvert(std::str infix){
         else if (infix[i] == ')'){
 
             while (infix_stack.top() != '('){
-                    output += infix_stack.top();
+                    result += infix_stack.top();
                     infix_stack.pop();
             }
+            //Pop '(' from the stack after looping
+            infix_stack.pop();
         }
 
         //If operator is encountered, estabish primacy
         else{
             if (Operator(infix_stack.top())){
                 while (SetPriority(infix[i]) <= SetPriority(infix_stack.top())){
-                    output += infix_stack.top();
+                    result += infix_stack.top();
                     infix_stack.pop();
                 }
                 infix_stack.push(infix[i]);
@@ -431,7 +492,7 @@ std::str PostfixConvert(std::str infix){
 }
 
 //Function that converts an infix expression to prefix by reversing its postfix equivalent
-std::str PrefixConvert(std::str infix){
+std::string PrefixConvert(std::string infix){
     int length = infix.size();
 
     std::reverse(infix.begin(), infix.end());
@@ -442,7 +503,7 @@ std::str PrefixConvert(std::str infix){
             infix[i] = ')';
             i++;
             }
-        else of (infix[i] == ')'){
+        else if (infix[i] == ')'){
             infix[i] = '(';
             i++;
         }
@@ -473,16 +534,18 @@ void InfixMain(){
     std::getline(std::cin, infix);
 
     std::cout<<"Would you like to convert your expression to prefix or postfix notation?"<<std::endl;
-    std::cout<<"1) Prefix /n 2) Postfix :";
+    std::cout<<"1) Prefix"<<std::endl<<"2) Postfix :";
     std::cin>>choice;
 
     if(choice == 1){
         std::cout<<"Your original expression was: "<<infix<<std::endl;
-        std::cout<<"It's prefix equivalent is: "<<PrefixConvert(infix);<<std::endl;
+        std::cout<<"It's prefix equivalent is: "<<PrefixConvert(infix)<<std::endl;
+        return;
     }
     if(choice == 2){
         std::cout<<"Your original expression was: "<<infix<<std::endl;
-        std::cout<<"It's postfix equivalent is: "<<PostfixConvert(infix);<<std::endl;
+        std::cout<<"It's postfix equivalent is: "<<PostfixConvert(infix)<<std::endl;
+        return;
     }
     else{
         std::cout<<"Invalid input. Returning to main...";
@@ -510,22 +573,22 @@ int main(){
         std::cin>>c;
         switch(c){
         case 1:
-            fibonacci_input();
+            Fibonacci();
             break;
         case 2:
-            prime_factorization();
+            PrimeFact();
             break;
         case 3:
-            next_prime();
+           // next_prime();
             break;
         case 4:
-            palindrome();
+          //  palindrome();
             break;
         case 5:
-            change_calculator();
+           // change_calculator();
             break;
         case 6:
-            binary_calculator();
+          //  binary_calculator();
             break;
         case 7:
             ReverseMain();
