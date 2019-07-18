@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iomanip>
 #include <stack>
+#include <deque>
 
 
 //###################################
@@ -159,21 +160,26 @@ void NextPrimeNumber(){
 
     //Loop to continually generate new prime numbers until user wishes to stop
     while(valid){
+        //Prints out number zero if array is empty
         if (!primes[0]){
             std::cout<<1;
             primes[0] = 1;
         }
 
+        //Prints out number 1
         else if (!primes[1]){
             std::cout<<2;
             primes[1]=2;
         }
+
         else{
             for (int i=3; i<maxiterations; i+=2){
+                //Calls function to test if number i is prime
                 if (!IsPrime(i)){
                     continue;
                 }
 
+                //If i is prime, calls function to test if already in array
                 if (InArray(primes, counter, i)){
                     std::cout<<i;
                     primes[counter] = i;
@@ -182,6 +188,8 @@ void NextPrimeNumber(){
                 }
             }
         }
+
+        //Allows user to decide if they'd like to continue
         char c = '\0';
         std::cout<<std::endl<<std::endl<<"Would you like to continue?(Y/N): ";
         std::cin>>c;
@@ -198,9 +206,78 @@ void NextPrimeNumber(){
 
     }
 
-
 }
 
+//##################################
+//BEGIN SECTION OF PALINDROME  CODE
+//##################################
+
+//Function to parse user input to remove spaces and neutralize capitalization
+std::string PalindromeParse(std::string str){
+    std::string parsed;
+    int counter = 0;
+
+    //Reads through input string, omitting spaces and adding characters to return string
+    for (int i=0; i<=str.length(); i++){
+        if (str[i] == ' '){
+            continue;
+        }
+        else{
+            parsed[counter] = str[i];
+            counter ++;
+        }
+    }
+
+    //Converts string to all caps to make analyzer case-agnostic
+    for (int i=0; i<=parsed.length(); i++){
+        parsed[i] = toupper(parsed[i]);
+    }
+    return parsed;
+}
+
+//Function to asses a palindrome using the deque data structure
+bool IsPalindrome(std::string clean){
+
+    //Initializing assessment deque
+    std::deque<char> holder;
+
+    //Adding each character in the string to the deque
+    for(int i=0; i<clean.length(); i++){
+        holder.push_back(clean[i]);
+    }
+
+    //Popping elements of front and back end of deque and testing if the same
+    while (holder.size() > 1){
+
+        if (holder.pop_front() != holder.pop_back()){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+//Main driver function for palindrome analyzer
+void PalindromeMain(){
+
+    std::string str;
+    std::cout<<std::endl<<"~~~Welcome to the C++ Palindrome Analyzer!"~~~<<std::endl<<std::endl;
+    std::cout<<"Please enter the string you'd like to analyze: ";
+    std::cin.ignore();
+    std::getline(std::cin,str);
+
+    //Calls function to clean input string (remove spaces, capitalize everything)
+    std::string clean = PalindromeParse(str);
+
+    //Analyzes whether the user's string is a palindrome
+    if (IsPalindrome(clean)){
+        std::cout<<std::endl<<"Your string "<<clean<<" is a palindrome!";
+    }
+    else{
+        std::cout<<std::endl<<"Your string "<<clean<<" is not a palindrome!";
+    }
+
+}
 
 //######################################
 //BEGIN SECTION OF REVERSE STRING CODE
@@ -657,7 +734,7 @@ int main(){
             NextPrimeNumber();
             break;
         case 4:
-          //  palindrome();
+            PalindromeMain();
             break;
         case 5:
            // change_calculator();
