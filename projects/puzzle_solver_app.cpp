@@ -277,6 +277,71 @@ void PalindromeMain(){
 
 }
 
+//#########################################
+//BEGIN SECTION OF CHANGE CALCULATOR  CODE
+//#########################################
+
+
+//Function to accept and control for user input
+void ChangeInput(float &price, float &payment){
+
+        //Loop to ensure proper input for price
+        while(true){
+            std::cout<<"Please enter the price of your purchase: ";
+            std::cin>>price;
+            //Catching non-numeric entries
+            if (!std::cin ){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout<<"Invalid input. Please enter a valid price."<<std::endl;
+                continue;
+            }
+            else{
+                std::cout<<"Your price was recorded as: "<<std::printf("%.1f", price)<<std::endl;
+                break;
+            }
+        }
+
+        //Loop to ensure proper input for payment
+        while(true){
+            std::cout<<"Please enter the payment tendered: ";
+            std::cin>>payment;
+
+            //Catching non-numeric entries
+            if (!std::cin){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout<<"Invalid input. Please enter a valid payment."<<std::endl;
+                continue;
+            }
+            else{
+                std::cout<<"Your payment was recorded as: "<<std::printf("%.1f", payment)<<std::endl;
+                break;
+            }
+        }
+
+}
+
+//Main driver function for change calculator
+void ChangeMain(){
+
+    //Declaring variables
+    float price;
+    float payment;
+
+    std::cout<<std::endl<<"~~~Welcome to the C++ Change Calculator!~~~"<<std::endl<<std::endl;
+    std::cout<<"For a given price and payment, I can return the correct amount of change owed."<<std::endl;
+
+    ChangeInput(price, payment);
+
+}
+
+//#########################################
+//BEGIN SECTION OF BINARY CALCULATOR  CODE
+//#########################################
+
+
+
 //######################################
 //BEGIN SECTION OF REVERSE STRING CODE
 //######################################
@@ -310,22 +375,54 @@ void ReverseMain(){
 //BEGIN SECTION OF DISTANCE CALCULATOR CODE
 //###################################
 
+//Ensures that only numeric values are accepted for coordinates
+void CoordinateControl(double &lat1, double &long1, std::string city){
+    while(true){
+            std::cout<<"Please enter the latitude of "<<city<<" (up to 15 decimal places): ";
+            std::cin>>lat1;
+
+            //Catching non-numeric entries
+            if (!std::cin ){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout<<"Invalid input. Please enter a valid coordinate."<<std::endl;
+                continue;
+            }
+            else{
+                break;
+            }
+        }
+    while(true){
+        std::cout<<"Please enter the longitude of "<<city<<" (up to 15 decimal places): ";
+        std::cin>>long1;
+
+        //Catching non-numeric entries
+        if (!std::cin ){
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout<<"Invalid input. Please enter a valid coordinate."<<std::endl;
+            continue;
+        }
+        else{
+            break;
+        }
+    }
+}
+
+
 //Collects user input for names and coordinates of locations
-void distance_input(double &lat1, double &long1, double &lat2, double &long2,std::string &city1, std::string &city2){
+void DistanceInput(double &lat1, double &long1, double &lat2, double &long2,std::string &city1, std::string &city2){
+    //Grabbing entry information for first city
     std::cout<<"Please enter the name of your first location (City, Country): ";
     std::cin.ignore();
     std::getline(std::cin,city1);
-    std::cout<<"Please enter the latitude of "<<city1<<" (up to 15 decimal places): ";
-    std::cin>>lat1;
-    std::cout<<"Please enter the longitude of "<<city1<<" (up to 15 decimal places): ";
-    std::cin>>long1;
+    CoordinateControl(lat1, long1, city1);
+
+    //Grabbing entry information for second city
     std::cout<<"Please enter the name of your second location (City, Country): ";
     std::cin.ignore();
     std::getline(std::cin,city2);
-    std::cout<<"Please enter the latitude of "<<city2<<" (up to 15 decimal places): ";
-    std::cin>>lat2;
-    std::cout<<"Please enter the longitude of "<<city2<<" (up to 15 decimal places): ";
-    std::cin>>long2;
+    CoordinateControl(lat2, long2, city2);
 }
 
 //Converts provided coordinates from degrees to radians
@@ -369,7 +466,7 @@ void DistanceMain(){
     bool valid = true;
 
     std::cout<<std::endl<<"~~~Welcome to the Geographic Distance Calculator!~~~"<<std::endl<<std::endl;
-    distance_input(lat1,long1,lat2,long2, city1, city2);
+    DistanceInput(lat1,long1,lat2,long2, city1, city2);
     std::cout<<"The coordinates of "<<city1<<" are: ("<<lat1<<", "<<long1<<")\n";
     std::cout<<"The coordinates of "<<city2<<" are: ("<<lat2<<", "<<long2<<")\n";
 
@@ -735,10 +832,10 @@ int main(){
             PalindromeMain();
             break;
         case 5:
-           // change_calculator();
+            ChangeMain();
             break;
         case 6:
-          //  binary_calculator();
+//            BinaryMain();
             break;
         case 7:
             ReverseMain();
