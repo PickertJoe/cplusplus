@@ -297,7 +297,6 @@ void ChangeInput(float &price, float &payment){
                 continue;
             }
             else{
-                std::cout<<"Your price was recorded as: "<<std::printf("%.1f", price)<<std::endl;
                 break;
             }
         }
@@ -314,13 +313,61 @@ void ChangeInput(float &price, float &payment){
                 std::cout<<"Invalid input. Please enter a valid payment."<<std::endl;
                 continue;
             }
+            else if (payment < price){
+                std::cout<<"You didn't pay the full price!"<<std::endl;
+                continue;
+            }
             else{
-                std::cout<<"Your payment was recorded as: "<<std::printf("%.1f", payment)<<std::endl;
                 break;
             }
         }
 
 }
+
+//Function to round input if necessary and calculate difference between price and payment
+float DifferenceCalculator(float price, float payment){
+
+    //Using typecast to reduce input values to 2 decimal places
+    price = (int)(price * 100 + .5);
+    price = (float)price/100;
+    payment = (int)(payment * 100 + .5);
+    payment = (float)payment/100;
+
+    float difference = payment - price;
+
+    return difference;
+}
+
+//Function to print results of change calculation
+void PrintChange(float difference, int change_holder[9]){
+
+    //Declaring array of denomincation names
+    char names[9][15] = {"Hundreds", "Twenties", "Tens", "Fives", "Ones", "Quarters", "Dimes", "Nickels", "Pennies"};
+    std::cout<<std::endl<<"To make change of "<<difference<<", you will need: "<<std::endl;
+    for(int i=0; i<9; i++){
+        std::cout<<change_holder[i]<<" "<<names[i]<<std::endl;
+    }
+
+}
+
+//Calculates the least amount of change needed to make difference
+//Returns an array with the numeric value of each denomination
+void ChangeCalculator(float difference){
+
+    //Duplicating original difference to pass to print function
+    float original_difference = difference;
+    //Declaring an array to hold values of each demonination of change
+    float denom_values[9] = {100,20,10,5,1,.25,.1,.05,.01};
+    static int change_holder[9];
+
+    for(int i=0; i<9; i++){
+        change_holder[i] = difference / denom_values[i];
+        difference = difference - (change_holder[i] * denom_values[i] );
+    }
+
+    PrintChange(original_difference, change_holder);
+}
+
 
 //Main driver function for change calculator
 void ChangeMain(){
@@ -333,6 +380,8 @@ void ChangeMain(){
     std::cout<<"For a given price and payment, I can return the correct amount of change owed."<<std::endl;
 
     ChangeInput(price, payment);
+    float difference = DifferenceCalculator(price, payment);
+    ChangeCalculator(difference);
 
 }
 
