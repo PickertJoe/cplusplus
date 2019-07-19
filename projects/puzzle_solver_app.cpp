@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <stack>
 #include <deque>
+#include <algorithm>
 
 
 //###################################
@@ -214,25 +215,18 @@ void NextPrimeNumber(){
 
 //Function to parse user input to remove spaces and neutralize capitalization
 std::string PalindromeParse(std::string str){
-    std::string parsed;
-    int counter = 0;
+
 
     //Reads through input string, omitting spaces and adding characters to return string
-    for (int i=0; i<=str.length(); i++){
-        if (str[i] == ' '){
-            continue;
-        }
-        else{
-            parsed[counter] = str[i];
-            counter ++;
-        }
-    }
+
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+
 
     //Converts string to all caps to make analyzer case-agnostic
-    for (int i=0; i<=parsed.length(); i++){
-        parsed[i] = toupper(parsed[i]);
+    for (int i=0; i<=str.length(); i++){
+        str[i] = toupper(str[i]);
     }
-    return parsed;
+    return str;
 }
 
 //Function to asses a palindrome using the deque data structure
@@ -249,8 +243,12 @@ bool IsPalindrome(std::string clean){
     //Popping elements of front and back end of deque and testing if the same
     while (holder.size() > 1){
 
-        if (holder.pop_front() != holder.pop_back()){
+        if (holder.front() != holder.back()){
             return false;
+        }
+        else{
+            holder.pop_front();
+            holder.pop_back();
         }
     }
     return true;
@@ -261,7 +259,7 @@ bool IsPalindrome(std::string clean){
 void PalindromeMain(){
 
     std::string str;
-    std::cout<<std::endl<<"~~~Welcome to the C++ Palindrome Analyzer!"~~~<<std::endl<<std::endl;
+    std::cout<<std::endl<<"~~~Welcome to the C++ Palindrome Analyzer!~~~"<<std::endl<<std::endl;
     std::cout<<"Please enter the string you'd like to analyze: ";
     std::cin.ignore();
     std::getline(std::cin,str);
@@ -271,10 +269,10 @@ void PalindromeMain(){
 
     //Analyzes whether the user's string is a palindrome
     if (IsPalindrome(clean)){
-        std::cout<<std::endl<<"Your string "<<clean<<" is a palindrome!";
+        std::cout<<std::endl<<"Your string '"<<str<<"' is a palindrome!";
     }
     else{
-        std::cout<<std::endl<<"Your string "<<clean<<" is not a palindrome!";
+        std::cout<<std::endl<<"Your string '"<<str<<"' is not a palindrome!";
     }
 
 }
