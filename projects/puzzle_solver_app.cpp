@@ -389,12 +389,71 @@ void ChangeMain(){
 //BEGIN SECTION OF BINARY CALCULATOR  CODE
 //#########################################
 
+void BinaryPrint(int result[]){
+}
+
+int BinaryInput(){
+
+    int input;
+    while(true){
+                std::cout<<"Please enter the number you'd like to convert: ";
+                std::cin>>input;
+                //Catching non-numeric entries
+                if (!std::cin ){
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout<<"Invalid input. Please enter a valid integer."<<std::endl;
+                    continue;
+                }
+                else{
+                    break;
+                }
+            }
+
+    return input;
+}
+
+void DemicalBinary(int input){
+}
+
+void BinaryDemical(int input){
+}
 
 //Main driver function for Binary Calculator
 void BinaryMain(){
 
+    int input;
+    int menu_choice;
+
     std::cout<<std::endl<<"~~~Welcome to the C++ Binary/Decimal Number Converter!~~~"<<std::endl;
     std::cout<<"For any binary/decimal number, I can convert to its decimal/binary equivalent."<<std:endl;
+    input = BinaryInput(input);
+
+    while(true){
+                std::cout<<std::endl<<"Please select an option from the menu below: "<<std::endl;
+                std::cout<<"1) Decimal -> Binary \n2) Binary -> Decimal \n3) Exit program ";
+                std::cin>>menu_choice;
+                //Catching non-numeric entries
+                if (!std::cin ){
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+                    continue;
+                }
+                else if (menu_choice = 1){
+                    DecimalBinary(input);
+                    break;
+                }
+                else if (menu_choice = 2){
+                    BinaryDecimal(input);
+                    break;
+                }
+                else{
+                    std::cout<<std::endl<<"Exiting program...";
+                    break;
+                }
+            }
+
 }
 
 //######################################
