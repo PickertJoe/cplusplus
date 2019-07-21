@@ -390,6 +390,12 @@ void ChangeMain(){
 //#########################################
 
 
+//Main driver function for Binary Calculator
+void BinaryMain(){
+
+    std::cout<<std::endl<<"~~~Welcome to the C++ Binary/Decimal Number Converter!~~~"<<std::endl;
+    std::cout<<"For any binary/decimal number, I can convert to its decimal/binary equivalent."<<std:endl;
+}
 
 //######################################
 //BEGIN SECTION OF REVERSE STRING CODE
