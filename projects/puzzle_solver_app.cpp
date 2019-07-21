@@ -389,7 +389,22 @@ void ChangeMain(){
 //BEGIN SECTION OF BINARY CALCULATOR  CODE
 //#########################################
 
-void BinaryPrint(int result[]){
+//Prints the result of the decimal -> binary conversion
+void PrintBinary(int result[], int input, int counter){
+
+    std::cout<<"Your initial decimal input of "<<input<<" is equivalent to ";
+    for (int i= counter-1; i >= 0; i--){
+        std::cout<<result[i];
+    }
+    std::cout<<" in binary form.";
+}
+
+//Prints the result of the binary -> decimal conversion
+void PrintDecimal(int result, int input){
+
+    std::cout<<"Your initial binary input of "<<input<<" is equivalent to "<<result<<" in decimal form."<<std::endl;
+
+
 }
 
 int BinaryInput(){
@@ -413,23 +428,59 @@ int BinaryInput(){
     return input;
 }
 
-void DemicalBinary(int input){
+void DecimaltoBinary(int input){
+
+    //Declaring array to store the binary number
+    int binary[64];
+
+    //Initializing counter for the array
+    int counter=0;
+
+    while(input > 0)
+    {
+        binary[counter] = input % 2;
+        input = input / 2;
+        counter ++;
+    }
+
+    //Sending resulting array to print function to display
+    PrintBinary(binary, input, counter);
 }
 
-void BinaryDemical(int input){
+void BinarytoDecimal(int input){
+
+    //Initializing placeholder variable for use in conversion loop
+    int temp = input;
+    int result = 0;
+
+    //Initializing base value of 1
+    int base = 1;
+
+    while(temp) {
+        int last_digit = temp % 10;
+        temp = temp /10;
+
+        result += last_digit * base;
+        base = base* 2;
+    }
+
+    //Sending results to print function
+    PrintDecimal(result, input);
 }
 
 //Main driver function for Binary Calculator
 void BinaryMain(){
 
-    int input;
-    int menu_choice;
-
+    //Welcome message
     std::cout<<std::endl<<"~~~Welcome to the C++ Binary/Decimal Number Converter!~~~"<<std::endl;
-    std::cout<<"For any binary/decimal number, I can convert to its decimal/binary equivalent."<<std:endl;
-    input = BinaryInput(input);
+    std::cout<<"For any binary/decimal number, I can convert to its decimal/binary equivalent."<<std::endl;
+
+    //Calling to input function
+    int input = BinaryInput();
 
     while(true){
+                //Allowing user to choose which conversion they want
+                int menu_choice;
                 std::cout<<std::endl<<"Please select an option from the menu below: "<<std::endl;
                 std::cout<<"1) Decimal -> Binary \n2) Binary -> Decimal \n3) Exit program ";
                 std::cin>>menu_choice;
@@ -440,12 +491,14 @@ void BinaryMain(){
                     std::cout<<"Invalid input. Please enter a valid menu choice."<<std::endl;
                     continue;
                 }
-                else if (menu_choice = 1){
-                    DecimalBinary(input);
+                //Calling to demical -> binary converter
+                else if (menu_choice == 1){
+                    DecimaltoBinary(input);
                     break;
                 }
-                else if (menu_choice = 2){
-                    BinaryDecimal(input);
+                //Calling to binary -> decimal converter
+                else if (menu_choice == 2){
+                    BinarytoDecimal(input);
                     break;
                 }
                 else{
