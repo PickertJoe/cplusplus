@@ -392,7 +392,7 @@ void ChangeMain(){
 //Prints the result of the decimal -> binary conversion
 void PrintBinary(int result[], int input, int counter){
 
-    std::cout<<"Your initial decimal input of "<<input<<" is equivalent to ";
+    std::cout<<std::endl<<"Your initial decimal input of "<<input<<" is equivalent to ";
     for (int i= counter-1; i >= 0; i--){
         std::cout<<result[i];
     }
@@ -402,7 +402,7 @@ void PrintBinary(int result[], int input, int counter){
 //Prints the result of the binary -> decimal conversion
 void PrintDecimal(int result, int input){
 
-    std::cout<<"Your initial binary input of "<<input<<" is equivalent to "<<result<<" in decimal form."<<std::endl;
+    std::cout<<std::endl<<"Your initial binary input of "<<input<<" is equivalent to "<<result<<" in decimal form."<<std::endl;
 
 
 }
@@ -421,6 +421,8 @@ int BinaryInput(){
                     continue;
                 }
                 else{
+                    std::cin.clear();
+                    std::cin.ignore(16, '\n');
                     break;
                 }
             }
@@ -436,6 +438,9 @@ void DecimaltoBinary(int input){
     //Initializing counter for the array
     int counter=0;
 
+    //Initializing placeholder for input to preserve original for print function
+    int initial = input;
+
     while(input > 0)
     {
         binary[counter] = input % 2;
@@ -444,7 +449,7 @@ void DecimaltoBinary(int input){
     }
 
     //Sending resulting array to print function to display
-    PrintBinary(binary, input, counter);
+    PrintBinary(binary, initial, counter);
 }
 
 void BinarytoDecimal(int input){
@@ -482,13 +487,13 @@ void BinaryMain(){
                 //Allowing user to choose which conversion they want
                 int menu_choice;
                 std::cout<<std::endl<<"Please select an option from the menu below: "<<std::endl;
-                std::cout<<"1) Decimal -> Binary \n2) Binary -> Decimal \n3) Exit program ";
+                std::cout<<"1) Decimal -> Binary \n2) Binary -> Decimal \n3) Exit program \n";
                 std::cin>>menu_choice;
                 //Catching non-numeric entries
                 if (!std::cin ){
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+                    std::cout<<std::endl<<"Invalid input. Please enter a valid menu choice."<<std::endl;
                     continue;
                 }
                 //Calling to demical -> binary converter
@@ -502,7 +507,7 @@ void BinaryMain(){
                     break;
                 }
                 else{
-                    std::cout<<std::endl<<"Exiting program...";
+                    std::cout<<std::endl<<"Closing program...";
                     break;
                 }
             }
@@ -1002,7 +1007,7 @@ int main(){
             ChangeMain();
             break;
         case 6:
-//            BinaryMain();
+            BinaryMain();
             break;
         case 7:
             ReverseMain();
