@@ -953,6 +953,17 @@ int SetPriority(char c){
     return 0;
 }
 
+std::string InfixInput(){
+
+    std::string infix;
+
+    std::cout<<"Please enter your infix expression with no spaces: ";
+    std::cin.ignore();
+    std::getline(std::cin, infix);
+
+    return infix;
+
+}
 
 //Function that converts an infix to postfix using stack data structure
 std::string PostfixConvert(std::string infix){
@@ -1027,38 +1038,58 @@ std::string PrefixConvert(std::string infix){
     return result;
 }
 
+//Function that allows user to choose between conversion options
+void InfixMenu(std::string infix){
+    //Prompting user to choose between conversion options
+    while(true){
+            int choice;
+            std::cout<<"Would you like to convert your expression to prefix or postfix notation?"<<std::endl;
+            std::cout<<"1) Prefix"<<std::endl<<"2) Postfix :";
+            std::cin>>choice;
+
+            //Catching non-numeric entries
+            if (!std::cin ){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout<<std::endl<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+                continue;
+            }
+
+            //Calling convert to prefix function
+            else if(choice == 1){
+                std::cout<<"Your original expression was: "<<infix<<std::endl;
+                std::cout<<"Its prefix equivalent is: "<<PrefixConvert(infix)<<std::endl;
+                return;
+            }
+
+            //Calling convert to postfix function
+            else if(choice == 2){
+                std::cout<<"Your original expression was: "<<infix<<std::endl;
+                std::cout<<"Its postfix equivalent is: "<<PostfixConvert(infix)<<std::endl;
+                return;
+            }
+
+            //Catching all other invalid numeric entries
+            else{
+                std::cout<<std::endl<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+                continue;
+            }
+    }
+
+}
 
 //Main driver function for Infix converter
 void InfixMain(){
 
-    std::string infix;
-    int choice;
-
     std::cout<<std::endl<<"~~~Welcome to the Infix Expression Evaluator!~~~"<<std::endl<<std::endl;
     std::cout<<"I can convert any valid infix expression to its prefix or postfix equivalent."<<std::endl;
-    std::cout<<"Letters or numbers may be used."<<std::endl;
-    std::cout<<"Please enter your infix expression with no spaces: ";
 
-    std::cin.ignore();
-    std::getline(std::cin, infix);
+    //Calling to input function
+    std::string infix = InfixInput();
 
-    std::cout<<"Would you like to convert your expression to prefix or postfix notation?"<<std::endl;
-    std::cout<<"1) Prefix"<<std::endl<<"2) Postfix :";
-    std::cin>>choice;
+    //Calling to conversion menu function
+    InfixMenu(infix);
 
-    if(choice == 1){
-        std::cout<<"Your original expression was: "<<infix<<std::endl;
-        std::cout<<"It's prefix equivalent is: "<<PrefixConvert(infix)<<std::endl;
-        return;
-    }
-    if(choice == 2){
-        std::cout<<"Your original expression was: "<<infix<<std::endl;
-        std::cout<<"It's postfix equivalent is: "<<PostfixConvert(infix)<<std::endl;
-        return;
-    }
-    else{
-        std::cout<<"Invalid input. Returning to main...";
-    }
 }
 
 int main(){
@@ -1077,7 +1108,7 @@ int main(){
         std::cout<<"7) Reverse a String \n";
         std::cout<<"8) Geographic Distance Calculator \n";
         std::cout<<"9) Sudoku Puzzle Solver \n";
-        std::cout<<"10) Prefix/Infix/Postfix Converter + Calculator \n";
+        std::cout<<"10) Prefix/Infix/Postfix Converter \n";
         std::cout<<"11) Exit program \n";
         std::cin>>c;
 
