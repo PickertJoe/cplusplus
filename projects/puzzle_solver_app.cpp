@@ -1063,9 +1063,9 @@ void InfixMain(){
 
 int main(){
     //Main menu that allows user to choose puzzle/problem they'd like to solve
-    int c=0;
+    int c;
     const char *welcome="~~~Welcome to Joe's C++ Puzzle Solving Program!~~~";
-    while(c!=11){
+    while(true){
         std::cout<<std::endl<<std::endl<<welcome<<std::endl<<std::endl;
         std::cout<<"Please select an option from the menu below: \n";
         std::cout<<"1) Fibonacci Sequence Generator \n";
@@ -1080,44 +1080,55 @@ int main(){
         std::cout<<"10) Prefix/Infix/Postfix Converter + Calculator \n";
         std::cout<<"11) Exit program \n";
         std::cin>>c;
-        switch(c){
-        case 1:
-            FibMain();
-            break;
-        case 2:
-            PrimeFactMain();
-            break;
-        case 3:
-            NextPrimeMain();
-            break;
-        case 4:
-            PalindromeMain();
-            break;
-        case 5:
-            ChangeMain();
-            break;
-        case 6:
-            BinaryMain();
-            break;
-        case 7:
-            ReverseMain();
-            break;
-        case 8:
-            DistanceMain();
-            break;
-        case 9:
-            SudokuMain();
-            break;
-        case 10:
-            InfixMain();
-            break;
-        case 11:
-            std::cout<<"Closing program..."<<std::endl;
-            return 0;
-        default:
-            std::cout<<"Invalid input. Please try again."<<std::endl;
 
+        //Controlling for non-numeric input
+        if (!std::cin ){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout<<std::endl<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+                continue;
+            }
+
+        //If input is numeric, enter switch menu
+        else{
+
+            switch(c){
+            case 1:
+                FibMain();
+                break;
+            case 2:
+                PrimeFactMain();
+                break;
+            case 3:
+                NextPrimeMain();
+                break;
+            case 4:
+                PalindromeMain();
+                break;
+            case 5:
+                ChangeMain();
+                break;
+            case 6:
+                BinaryMain();
+                break;
+            case 7:
+                ReverseMain();
+                break;
+            case 8:
+                DistanceMain();
+                break;
+            case 9:
+                SudokuMain();
+                break;
+            case 10:
+                InfixMain();
+                break;
+            case 11:
+                std::cout<<"Closing program..."<<std::endl;
+                return 0;
+            default:
+                std::cout<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+            }
         }
     }
-    return 0;
 }
