@@ -18,21 +18,38 @@
 //Collects user input for iterations of Fibonacci sequence
 void FibInput(int &iterations){
     //Controls for invalid input
-    bool valid = true;
-    while(valid){
-        std::cout<<"Please enter the number of iterations of the sequence you'd like to generate (<100): ";
-        std::cin>>iterations;
-        if( iterations > 0 && iterations <101){
-            valid = false;
-            return;
-        }
-        else if ( iterations > 100 ){
+    while(true){
+            std::cout<<std::endl<<"Please enter the number of iterations you'd like to generate (<100): ";
+            std::cin>>iterations;
+
+            //Catching non-numeric entries
+            if (!std::cin ){
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout<<"Invalid input. Characters are not accepted."<<std::endl;
+                continue;
+            }
+
+            //Catching inputs less than or equal to 0
+            else if (iterations <= 0){
+                std::cout<<"Invalid input. Please enter an integer greater than 0."<<std::endl;
+                continue;
+            }
+
+            //Catching excessively large inputs
+            else if ( iterations > 100 ){
             std::cout<<"Program cannot handle that many iterations. Please enter a number between 1 and 100."<<std::endl;
+            continue;
+            }
+
+            //Accepting input and trimming extraneous data from input stream
+            else{
+                std::cin.clear();
+                std::cin.ignore(16, '\n');
+                break;
+            }
         }
-        else{
-            std::cout<<"Invalid input. Please enter a number between 1 and 100."<<std::endl;
-        }
-    }
+
 }
 
 //Function to print results of fibonacci generator
@@ -90,7 +107,7 @@ void PrimeInput(int &number){
         if (!std::cin ){
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout<<"Invalid input. Please enter a valid integer."<<std::endl;
+            std::cout<<"Invalid input. Please enter a valid integer of 10 digits or fewer."<<std::endl;
             continue;
         }
         else if (number < 0){
@@ -312,7 +329,7 @@ void ChangeInput(float &price, float &payment){
             if (!std::cin ){
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout<<"Invalid input. Please enter a valid price."<<std::endl;
+                std::cout<<"Invalid input. Please enter a valid price of 10 digits or fewer."<<std::endl;
                 continue;
             }
 
@@ -431,6 +448,8 @@ void ChangeMain(){
 void PrintBinary(int result[], int input, int counter){
 
     std::cout<<std::endl<<"Your initial decimal input of "<<input<<" is equivalent to ";
+
+    //Loops through converted array backwards to show digits in proper order
     for (int i= counter-1; i >= 0; i--){
         std::cout<<result[i];
     }
@@ -455,7 +474,11 @@ int BinaryInput(){
                 if (!std::cin ){
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout<<"Invalid input. Please enter a valid integer."<<std::endl;
+                    std::cout<<"Invalid input. Please enter a positive integer of 10 digits or less."<<std::endl;
+                    continue;
+                }
+                else if (input <0){
+                    std::cout<<"Invalid input. Please enter an integer greater than 0.";
                     continue;
                 }
                 else{
@@ -470,13 +493,13 @@ int BinaryInput(){
 
 void DecimaltoBinary(int input){
 
-    //Declaring array to store the binary number
+    //Declaring array to store the converted binary number
     int binary[64];
 
     //Initializing counter for the array
     int counter=0;
 
-    //Initializing placeholder for input to preserve original for print function
+    //Duplicating the initial input to pass to print function
     int initial = input;
 
     while(input > 0)
@@ -494,6 +517,7 @@ void BinarytoDecimal(int input){
 
     //Initializing placeholder variable for use in conversion loop
     int temp = input;
+    //Initializing variable to hold converted decimal value
     int result = 0;
 
     //Initializing base value of 1
@@ -527,6 +551,7 @@ void BinaryMain(){
                 std::cout<<std::endl<<"Please select an option from the menu below: "<<std::endl;
                 std::cout<<"1) Decimal -> Binary \n2) Binary -> Decimal \n3) Exit program \n";
                 std::cin>>menu_choice;
+
                 //Catching non-numeric entries
                 if (!std::cin ){
                     std::cin.clear();
@@ -534,22 +559,31 @@ void BinaryMain(){
                     std::cout<<std::endl<<"Invalid input. Please enter a valid menu choice."<<std::endl;
                     continue;
                 }
+
                 //Calling to demical -> binary converter
                 else if (menu_choice == 1){
                     DecimaltoBinary(input);
                     break;
                 }
+
                 //Calling to binary -> decimal converter
                 else if (menu_choice == 2){
                     BinarytoDecimal(input);
                     break;
                 }
-                else{
+
+                //Exiting program
+                else if(menu_choice ==3){
                     std::cout<<std::endl<<"Closing program...";
                     break;
                 }
-            }
 
+                //Catching other non-valid menu inputs
+                else{
+                    std::cout<<std::endl<<"Invalid input. Please enter a valid menu choice."<<std::endl;
+                    continue;
+                }
+            }
 }
 
 //######################################
