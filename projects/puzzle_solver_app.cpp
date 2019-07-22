@@ -56,7 +56,7 @@ void FibMain(){
     //Welcome message and obtaining number of iterations
     int iterations;
 
-    std::cout<<"~~~Welcome to the Fibonacci Sequence Generator!~~~"<<std::endl<<std::endl;
+    std::cout<<std::endl<<"~~~Welcome to the Fibonacci Sequence Generator!~~~"<<std::endl;
 
     FibInput(iterations);
 
@@ -83,27 +83,32 @@ void FibMain(){
 
 //Function to grab and control for user input
 void PrimeInput(int &number){
-    bool valid = true;
-    while(valid){
+    while(true){
         std::cout<<"Please enter a positive integer of your choosing: ";
         std::cin>>number;
-        if( number < 0){
-            std::cout<<"Input error. Number entered was less than 0. Please try again."<<std::endl;
+        //Catching non-numeric entries
+        if (!std::cin ){
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout<<"Invalid input. Please enter a valid integer."<<std::endl;
+            continue;
         }
-        else if ( std::cin.fail() ){
-            std::cout<<"Input error. Value entered was not a number. Please try again."<<std::endl;
+        else if (number < 0){
+            std::cout<<"Invalid input. Please enter a valid integer greater than 0."<<std::endl;
+            continue;
         }
         else{
-            valid = false;
-            return;
+            //Clears extraneous input from stream (eg decimal values, letters, etc)
+            std::cin.ignore(16, '\n');
+            break;
         }
     }
 }
 
 //Driver function for prime factorization
-void PrimeFact(){
-    std::cout<<std::endl<<"~~~Welcome to the C++ Prime Number Factorization Calculator!~~~"<<std::endl<<std::endl;
-    std::cout<<"For any number you input, I can return of its prime factors."<<std::endl;
+void PrimeFactMain(){
+    std::cout<<std::endl<<"~~~Welcome to the C++ Prime Number Factorization Calculator!~~~"<<std::endl;
+    std::cout<<"For any number you input, I can return all of its prime factors."<<std::endl;
     int number;
 
     //Calls to user input function
@@ -1004,7 +1009,7 @@ int main(){
             FibMain();
             break;
         case 2:
-            PrimeFact();
+            PrimeFactMain();
             break;
         case 3:
             NextPrimeNumber();
