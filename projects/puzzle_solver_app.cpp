@@ -629,7 +629,7 @@ void CoordinateControl(double &lat1, double &long1, std::string city){
             if (!std::cin ){
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout<<"Invalid input. Please enter a valid coordinate."<<std::endl;
+                std::cout<<std::endl<<"Invalid input. Please enter a valid coordinate."<<std::endl;
                 continue;
             }
             else{
@@ -644,7 +644,7 @@ void CoordinateControl(double &lat1, double &long1, std::string city){
         if (!std::cin ){
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout<<"Invalid input. Please enter a valid coordinate."<<std::endl;
+            std::cout<<std::endl<<"Invalid input. Please enter a valid coordinate."<<std::endl;
             continue;
         }
         else{
@@ -704,13 +704,15 @@ void DistanceMain(){
     double lat1,long1,lat2,long2, distance;
 
     //Conversion factor from km to mi
-    double conversion = 0.62137119;
+    double CONVERSION = 0.62137119;
 
-    char unit_choice = '\0';
-    bool valid = true;
 
     std::cout<<std::endl<<"~~~Welcome to the Geographic Distance Calculator!~~~"<<std::endl<<std::endl;
+
+    //Calls input function to get information for two cities
     DistanceInput(lat1,long1,lat2,long2, city1, city2);
+
+    //Prints the user-provided input
     std::cout<<"The coordinates of "<<city1<<" are: ("<<lat1<<", "<<long1<<")\n";
     std::cout<<"The coordinates of "<<city2<<" are: ("<<lat2<<", "<<long2<<")\n";
 
@@ -720,26 +722,42 @@ void DistanceMain(){
 
     //Converts coordinates from degrees into radians
     toRadians(lat1,long1,lat2,long2);
+
+    //Calculates the distance between these geographic points
     distance = distance_calc(lat1,long1,lat2,long2);
 
-    while(valid){
-        //Loop to catch bad input
-        std::cout<<std::endl<<"Select a unit standard for your answer: "<<std::endl<<"a) Imperial "<<std::endl<<"b) Metric "<<std::endl;
+    //Allows user to choose between unit standards
+    while(true){
+        std::cout<<std::endl<<"Select a unit standard for your answer: "<<std::endl<<"1) Imperial "<<std::endl<<"2) Metric "<<std::endl;
+        int unit_choice;
         std::cin>>unit_choice;
 
-        //makes choice variable case-agnostic
-        unit_choice = toupper(unit_choice);
-        if( unit_choice == 'A'){
-            distance = distance * conversion;
+        //Catching non-numeric entries
+        if (!std::cin ){
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout<<std::endl<<"Invalid input. Please select one of the unit options."<<std::endl;
+            continue;
+        }
+
+        //Converting to english units if necessary
+        //Displaying the result of the calculation
+        else if( unit_choice == 1){
+            distance = distance * CONVERSION;
             std::cout<<std::endl<<"The distance between "<<city1<<" and "<<city2<<" is: "<<distance<<" miles."<<std::endl;
-            valid = false;
+            break;
         }
-        if( unit_choice == 'B'){
+
+        //Displaying default metric result of calculation
+        if( unit_choice == 2){
             std::cout<<std::endl<<"The distance between "<<city1<<" and "<<city2<<" is: "<<distance<<" kilometers."<<std::endl;
-            valid = false;
+            break;
         }
+
+        //Accounting for all other numeric non-menu options
         else{
-            std::cout<<"Invalid input. Please select one of the unit options.";
+            std::cout<<std::endl<<"Invalid input. Please select one of the unit options."<<std::endl;
+            continue;
         }
     }
 }
