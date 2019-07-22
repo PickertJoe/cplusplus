@@ -163,28 +163,29 @@ bool InArray(int primes[10000], int counter, int number){
 
 
 //Function that generates the next prime number in sequence until the user wishes to stop
-void NextPrimeNumber(){
-    std::cout<<std::endl<<std::endl<<"~~~Welcome to the Next Prime Number Generator!~~~"<<std::endl<<std::endl;
+void NextPrimeMain(){
+    std::cout<<std::endl<<"~~~Welcome to the Next Prime Number Generator!~~~"<<std::endl;
     std::cout<<"I can generate new prime numbers for as long as you'd like."<<std::endl;
 
     int maxsize = 10000;
     int maxiterations = 1000 * maxsize;
     int primes[10000];
-    bool valid = true;
     int counter = 2;
 
     //Loop to continually generate new prime numbers until user wishes to stop
-    while(valid){
+    while(true){
         //Prints out number zero if array is empty
         if (!primes[0]){
             std::cout<<1;
             primes[0] = 1;
+            std::cout<<std::endl<<"n=1";
         }
 
         //Prints out number 1
         else if (!primes[1]){
             std::cout<<2;
             primes[1]=2;
+            std::cout<<std::endl<<"n=2";
         }
 
         else{
@@ -199,6 +200,7 @@ void NextPrimeNumber(){
                     std::cout<<i;
                     primes[counter] = i;
                     counter ++;
+                    std::cout<<std::endl<<"n="<<counter;
                     break;
                 }
             }
@@ -213,10 +215,11 @@ void NextPrimeNumber(){
             continue;
         }
         else if (c=='N'){
+            std::cout<<"Closing program...";
             break;
         }
         else{
-            std::cout<<"Invalid input, generating next number...";
+            std::cout<<"Invalid input, generating next number... \n";
         }
 
     }
@@ -254,7 +257,7 @@ bool IsPalindrome(std::string clean){
         holder.push_back(clean[i]);
     }
 
-    //Popping elements of front and back end of deque and testing if the same
+    //Popping elements of front and back end of deque and testing if they match
     while (holder.size() > 1){
 
         if (holder.front() != holder.back()){
@@ -273,7 +276,8 @@ bool IsPalindrome(std::string clean){
 void PalindromeMain(){
 
     std::string str;
-    std::cout<<std::endl<<"~~~Welcome to the C++ Palindrome Analyzer!~~~"<<std::endl<<std::endl;
+    std::cout<<std::endl<<"~~~Welcome to the C++ Palindrome Analyzer!~~~"<<std::endl;
+    std::cout<<"For a given string, I can determine whether or not it is a palindrome."<<std::endl;
     std::cout<<"Please enter the string you'd like to analyze: ";
     std::cin.ignore();
     std::getline(std::cin,str);
@@ -303,6 +307,7 @@ void ChangeInput(float &price, float &payment){
         while(true){
             std::cout<<"Please enter the price of your purchase: ";
             std::cin>>price;
+
             //Catching non-numeric entries
             if (!std::cin ){
                 std::cin.clear();
@@ -310,6 +315,12 @@ void ChangeInput(float &price, float &payment){
                 std::cout<<"Invalid input. Please enter a valid price."<<std::endl;
                 continue;
             }
+
+            //Ensuring that price is greater than 0
+            else if (price < 0){
+                std::cout<<"Invalid input. Please enter a price greater than $0."<<std::endl;
+            }
+
             else{
                 break;
             }
@@ -327,6 +338,8 @@ void ChangeInput(float &price, float &payment){
                 std::cout<<"Invalid input. Please enter a valid payment."<<std::endl;
                 continue;
             }
+
+            //Ensuring that user pays enough for item
             else if (payment < price){
                 std::cout<<"You didn't pay the full price!"<<std::endl;
                 continue;
@@ -341,7 +354,7 @@ void ChangeInput(float &price, float &payment){
 //Function to round input if necessary and calculate difference between price and payment
 float DifferenceCalculator(float price, float payment){
 
-    //Using typecast to reduce input values to 2 decimal places
+    //Using typecast to trim input values to 2 decimal places
     price = (int)(price * 100 + .5);
     price = (float)price/100;
     payment = (int)(payment * 100 + .5);
@@ -355,9 +368,11 @@ float DifferenceCalculator(float price, float payment){
 //Function to print results of change calculation
 void PrintChange(float difference, int change_holder[9]){
 
-    //Declaring array of denomincation names
+    //Declaring array to store denomination names
     char names[9][15] = {"Hundreds", "Twenties", "Tens", "Fives", "Ones", "Quarters", "Dimes", "Nickels", "Pennies"};
-    std::cout<<std::endl<<"To make change of "<<difference<<", you will need: "<<std::endl;
+    std::cout<<std::endl<<"To make change of $"<<difference<<", you will need: "<<std::endl;
+
+    //Looping through arrays of denomination names & values to print results
     for(int i=0; i<9; i++){
         std::cout<<change_holder[i]<<" "<<names[i]<<std::endl;
     }
@@ -370,10 +385,14 @@ void ChangeCalculator(float difference){
 
     //Duplicating original difference to pass to print function
     float original_difference = difference;
-    //Declaring an array to hold values of each demonination of change
+
+    //Initializing an array to hold values of each demonination of change
     float denom_values[9] = {100,20,10,5,1,.25,.1,.05,.01};
+
+    //Declaring an array to hold the required number of each change denomination
     static int change_holder[9];
 
+    //Looping through denomincation values to fill change_holder
     for(int i=0; i<9; i++){
         change_holder[i] = difference / denom_values[i];
         difference = difference - (change_holder[i] * denom_values[i] );
@@ -386,15 +405,20 @@ void ChangeCalculator(float difference){
 //Main driver function for change calculator
 void ChangeMain(){
 
+    std::cout<<std::endl<<"~~~Welcome to the C++ Change Calculator!~~~"<<std::endl<<std::endl;
+    std::cout<<"For a given price and payment, I can return the correct amount of change owed."<<std::endl;
+
     //Declaring variables
     float price;
     float payment;
 
-    std::cout<<std::endl<<"~~~Welcome to the C++ Change Calculator!~~~"<<std::endl<<std::endl;
-    std::cout<<"For a given price and payment, I can return the correct amount of change owed."<<std::endl;
-
+    //Sending variables to input function
     ChangeInput(price, payment);
+
+    //Calculating difference between price and payment
     float difference = DifferenceCalculator(price, payment);
+
+    //Determining the least amount of change necessary
     ChangeCalculator(difference);
 
 }
@@ -1012,7 +1036,7 @@ int main(){
             PrimeFactMain();
             break;
         case 3:
-            NextPrimeNumber();
+            NextPrimeMain();
             break;
         case 4:
             PalindromeMain();
