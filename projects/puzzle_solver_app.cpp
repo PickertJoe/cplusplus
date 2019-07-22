@@ -1,18 +1,19 @@
 
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <string>
-#include <cmath>
-#include <iomanip>
-#include <stack>
-#include <deque>
+
+//Including necessary libraries
 #include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <deque>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <stack>
+#include <string>
 
-
-//###################################
+//#########################################
 //BEGIN SECTION OF FIBONACCI SEQUENCE CODE
-//###################################
+//#########################################
 
 //Collects user input for iterations of Fibonacci sequence
 void FibInput(int &iterations){
@@ -34,11 +35,25 @@ void FibInput(int &iterations){
     }
 }
 
+//Function to print results of fibonacci generator
+void FibPrint(int fib[], int iterations){
+
+    std::cout<<"The Fibonacci Sequence for "<<iterations<<" iterations is:"<<std::endl<<"[";
+    for(int i=0; i<iterations; i++){
+        if(i==0){
+            std::cout<<fib[i];
+        }
+        else{
+            std::cout<<", "<<fib[i];
+        }
+    }
+    std::cout<<"]";
+}
 
 //Takes the user-provided number of iterations and produces a fibonacci sequence dynamically
 //Fibonacci driver function
-void Fibonacci(){
-    //Welcome message and attaining number of iterations
+void FibMain(){
+    //Welcome message and obtaining number of iterations
     int iterations;
 
     std::cout<<"~~~Welcome to the Fibonacci Sequence Generator!~~~"<<std::endl<<std::endl;
@@ -52,20 +67,14 @@ void Fibonacci(){
     fib[0] = 0;
     fib[1] = 1;
 
-    for(int i=2; i<=iterations; i++){
+    //For loop to fill remainder of fibonacci array
+    for(int i=2; i<iterations; i++){
         fib[i] = fib[i-1] + fib[i-2];
     }
 
-    std::cout<<"The Fibonacci Sequence for "<<iterations<<" iterations is:"<<std::endl<<"[";
-    for(int i=0; i<=iterations; i++){
-        if(i==0){
-            std::cout<<fib[i];
-        }
-        else{
-            std::cout<<", "<<fib[i];
-        }
-    }
-    std::cout<<"]";
+    //Calling to print function to show results
+    FibPrint(fib, iterations);
+
 }
 
 //#########################################
@@ -992,7 +1001,7 @@ int main(){
         std::cin>>c;
         switch(c){
         case 1:
-            Fibonacci();
+            FibMain();
             break;
         case 2:
             PrimeFact();
